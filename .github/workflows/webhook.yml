@@ -1,15 +1,16 @@
-name: Telegram Webhook  
-on:  
-  repository_dispatch:  
-    types: [send_to_telegram]  
+name: Telegram Webhook
 
-jobs:  
-  send_message:  
-    runs-on: ubuntu-latest  
-    steps:  
-      - name: Send to Telegram  
-        run: |  
-          curl -s -X POST \  
-          "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \  
-          -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \  
-          -d "text=${{ github.event.client_payload.message }}"  
+on:
+  repository_dispatch:
+    types: [send_to_telegram]
+
+jobs:
+  send_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send to Telegram
+        run: |
+          curl -s -X POST \
+            "https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage" \
+            -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+            -d "text=${{ github.event.client_payload.message || 'Default message' }}"
